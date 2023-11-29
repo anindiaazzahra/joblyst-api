@@ -1,4 +1,4 @@
-# joblyst-api
+# Joblyst API
 
 ---
 
