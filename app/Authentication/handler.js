@@ -1,6 +1,10 @@
+'use strict';
 const admin = require('firebase-admin');
 const serviceAccount = require('../../serviceAccountKey.json');
 const firebase = require('firebase');
+const User = require('../../models/user');
+const db = require('../../db');
+const firestore = db.firestore();
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
@@ -22,6 +26,14 @@ module.exports = {
         emailVerified: false,
         disabled: false
       });
+
+      const userData = {
+        username,
+        email,
+      };
+
+      await firestore.collection('users').doc().set(userData);
+
       return res.status(200).send({
         status: "success",
         message: "Successfully register user",
@@ -37,10 +49,12 @@ module.exports = {
       // validateLoginUserSchema({ email, password });
       const auth = firebase.default.auth();
       const user = await auth.signInWithEmailAndPassword(email, password);
+      const token = await user.user.getIdToken();
+
       return res.status(200).send({
         status: "success",
-        message: "Successfully login user",
-        accessToken : user.user.refreshToken
+        message: "Successfully logged in",
+        accessToken : token,
       });
     } catch (error) {
       next(error);
