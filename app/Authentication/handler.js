@@ -9,7 +9,7 @@ const firestore = db.firestore();
 const { 
   validateRegisterSchema, 
   validateLoginSchema 
-} = require('../../Validator/User');
+} = require('../../validator/User');
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
