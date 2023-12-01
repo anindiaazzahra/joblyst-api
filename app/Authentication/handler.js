@@ -1,10 +1,15 @@
 'use strict';
+
 const admin = require('firebase-admin');
 const serviceAccount = require('../../serviceAccountKey.json');
 const firebase = require('firebase');
 const User = require('../../models/user');
 const db = require('../../db');
 const firestore = db.firestore();
+const { 
+  validateRegisterSchema, 
+  validateLoginSchema 
+} = require('../../Validator/User');
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
@@ -18,7 +23,7 @@ module.exports = {
   handlerRegisterUser: async (req, res, next) => {
     try {
       const { username, email, password } = req.body;
-      // validateRegisterUserSchema({ username, email, password });
+      validateRegisterSchema({ username, email, password });
       const user = await admin.auth().createUser({
         username,
         email,
@@ -46,7 +51,7 @@ module.exports = {
   handlerLoginUser: async (req, res, next) => {
     try {
       const { email, password } = req.body;
-      // validateLoginUserSchema({ email, password });
+      validateLoginSchema({ email, password });
       const auth = firebase.default.auth();
       const user = await auth.signInWithEmailAndPassword(email, password);
       const token = await user.user.getIdToken();
