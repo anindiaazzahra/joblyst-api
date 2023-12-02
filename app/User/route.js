@@ -9,7 +9,7 @@ const router = express.Router();
 const authenticationToken = require("../../middleware/authenticationToken");
 
 router.get("/profile", authenticationToken, handlerGetUserProfile);
-router.put("/profile", handlerUpdateUserProfile);
+router.put("/profile", authenticationToken, handlerUpdateUserProfile);
 router.put("/photoprofile", handlerUpdatePhotoProfile);
 router.delete("/photoprofile", handlerDeletePhotoProfile);
 
