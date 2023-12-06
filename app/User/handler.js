@@ -78,5 +78,42 @@ module.exports = {
     } catch (error) {
       next(error);
     }
-  }
+  },
+  handlerPostUserPreferredJobs: async (req, res, next) => {
+    try {
+      const { email } = req.user;
+      const { preferredJobs } = req.body;
+
+      if (!Array.isArray(preferredJobs) || preferredJobs.length !== 5) {
+        return res.status(400).send({
+          status: 'error',
+          message: 'Preferred jobs should be an array with 5 elements',
+        });
+      }
+
+      const userSnapshot = await firestore.collection('users').where('email', '==', email).get();
+      if (userSnapshot.empty) {
+        return res.status(404).send({ status: 'error', message: 'User not found' });
+      }
+
+      let userRef;
+      userSnapshot.forEach((doc) => {
+        userRef = doc.ref;
+      });
+
+      await userRef.update({
+        preferredJobs,
+      });
+
+      const updatedUserData = (await userRef.get()).data();
+
+      return res.status(200).send({
+        status: 'success',
+        message: 'Successfully post preferred jobs',
+        preferredJobs: updatedUserData.preferredJobs,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
 };
