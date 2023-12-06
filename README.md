@@ -23,3 +23,8 @@ or
 ```text
 npm run start-dev
 ```
+
+
+## Postman Documentation
+
+[Postman API Documentation](https://documenter.getpostman.com/view/23141895/2s9YeMznps)
