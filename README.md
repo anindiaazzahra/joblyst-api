@@ -1,7 +1,11 @@
 # Joblyst API
+---
+## Table of Contents
+
+- [Installation](#installation)
+- [API Documentation](#postman-documentation)
 
 ---
-
 ## Installation
 
 You need to install node v16.14.2 https://nodejs.org/en/blog/release/v16.14.2/ or latest https://nodejs.org/en/download/ <br> <br>
