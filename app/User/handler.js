@@ -5,6 +5,7 @@ const firestore = firebase.firestore();
 const { 
   validateUpdateUserSchema
 } = require('../../validator/User');
+const imageServices = require('../../utils/fileUpload');
 
 module.exports = {
   handlerGetUserProfile: async (req, res, next) => {
@@ -45,12 +46,26 @@ module.exports = {
       userSnapshot.forEach((doc) => {
         userRef = doc.ref;
       });
-      
+
+      const userData = (await userRef.get()).data();
+
+      if (req.file) {
+        const file = {
+          type: req.file.mimetype,
+          buffer: req.file.buffer
+        }
+        
+        const imageUrl = await imageServices.uploadImage(file); 
+        await userRef.update({
+          photoProfile: imageUrl || userData.photoProfile || null,
+        });
+      } 
+
       await userRef.update({
-        username: username || firestore.FieldValue.delete(),
-        fullname: fullName || firestore.FieldValue.delete(),
-        phoneNumber: phoneNumber || firestore.FieldValue.delete(),
-        address: address || firestore.FieldValue.delete(),
+        username: username || userData.username || null,
+        fullName: fullName || userData.fullName || null,
+        phoneNumber: phoneNumber || userData.phoneNumber || null,
+        address: address || userData.address || null,
       });
     
       const updatedUserData = (await userRef.get()).data();
@@ -60,20 +75,6 @@ module.exports = {
         message: 'Successfully update user data',
         user: updatedUserData,
       });
-    } catch (error) {
-      next(error);
-    }
-  },
-  handlerUpdatePhotoProfile: async (req, res, next) => {
-    try {
-      
-    } catch (error) {
-      next(error);
-    }
-  },
-  handlerDeletePhotoProfile: async (req, res, next) => {
-    try {
-      
     } catch (error) {
       next(error);
     }

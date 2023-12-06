@@ -12,7 +12,8 @@ const {
 } = require('../../validator/User');
 
 admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
+    credential: admin.credential.cert(serviceAccount),
+    storageBucket: 'gs://joblyst-api-project.appspot.com'
 });
 
 if (!firebase.apps.length) {
