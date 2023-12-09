@@ -3,6 +3,14 @@ steps:
     entrypoint: npm
     args: ['install']
 
+  # Copy the .env file
+  - name: 'gcr.io/cloud-builders/gsutil'
+    args: ['cp', '$_PATH_TO_ENV', '.env']
+
+  # Copy Firebase credentials
+  - name: 'gcr.io/cloud-builders/gsutil'
+    args: ['cp', '$_PATH_TO_FIREBASE_CREDENTIALS', 'serviceAccountKey.json']
+
   # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'gcr.io/$PROJECT_ID/$_SERVICE_NAME:$COMMIT_SHA', '.']
