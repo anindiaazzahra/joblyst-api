@@ -7,6 +7,7 @@ const bodyParser= require('body-parser');
 
 const authRouter = require("./app/Authentication/route");
 const userRouter = require("./app/User/route");
+const jobRouter = require("./app/Job/route");
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 
@@ -25,6 +26,7 @@ app.use(bodyParser.json());
 
 app.use('/', authRouter);
 app.use('/user', userRouter);
+app.use('/job', jobRouter);
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
