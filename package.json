@@ -24,5 +24,12 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
+  },
+  "platform": {
+    "darwin": {
+      "optionalDependencies": {
+        "fsevents": "^2.3.3"
+      }
+    }
   }
 }
