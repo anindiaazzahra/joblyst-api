@@ -12,9 +12,9 @@ const {
 const router = express.Router();
 const authenticationToken = require("../../middleware/authenticationToken");
 
-router.get("/", authenticationToken, handlerGetJobByPosition);
-router.get("/filter", authenticationToken, handlerGetJobByFilter);
-router.get("/random", authenticationToken, handlerGetRandomJob);
+router.get("/", handlerGetJobByPosition);
+router.get("/filter", handlerGetJobByFilter);
+router.get("/random", handlerGetRandomJob);
 router.get("/categories", handlerGetJobCategories);
 router.get("/salaries", handlerGetSalaries);
 router.get("/levels", handlerGetJobLevels);

@@ -6,6 +6,7 @@ const firebase = require('firebase');
 const User = require('../../models/user');
 const db = require('../../db');
 const firestore = db.firestore();
+const generateAccessToken = require("../../utils/tokenManager");
 const { 
   validateRegisterSchema, 
   validateLoginSchema 
@@ -57,10 +58,30 @@ module.exports = {
       const user = await auth.signInWithEmailAndPassword(email, password);
       const token = await user.user.getIdToken();
 
+      const userLoginSnapshot = await firestore.collection('users').where('email', '==', email).get();
+    
+      if (userLoginSnapshot.empty) {
+        return res.status(404).send({
+          status: "error",
+          message: "User not found"
+        });
+      }
+
+      const userLogin = userLoginSnapshot.docs[0].data();
+      const userDocumentRef = userLoginSnapshot.docs[0].ref;
+  
+      const accessToken = generateAccessToken({
+        email: userLogin.email,
+      });
+
       return res.status(200).send({
         status: "success",
         message: "Successfully logged in",
-        accessToken : token,
+        data : {
+          uid : userDocumentRef.id,
+          username : userLogin.username,
+          token : accessToken
+        }
       });
     } catch (error) {
       next(error);
