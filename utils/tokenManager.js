@@ -4,7 +4,7 @@ const accessTokenSecretKey = "testing-secret-joblyst-app";
 
 function generateAccessToken(userPayload) {
   return jwt.sign(userPayload, accessTokenSecretKey, {
-    expiresIn: "10m",
+    expiresIn: "60m",
   });
 }
 
