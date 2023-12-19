@@ -12,13 +12,13 @@ const {
 const router = express.Router();
 const authenticationToken = require("../../middleware/authenticationToken");
 
-router.get("/", handlerGetJobByPosition);
-router.get("/filter", handlerGetJobByFilter);
-router.get("/random", handlerGetRandomJob);
-router.get("/categories", handlerGetJobCategories);
-router.get("/salaries", handlerGetSalaries);
-router.get("/levels", handlerGetJobLevels);
-router.get("/work-times", handlerGetWorkTimes);
-router.get("/cities", handlerGetCities);
+router.get("/", authenticationToken, handlerGetJobByPosition);
+router.get("/filter", authenticationToken, handlerGetJobByFilter);
+router.get("/random", authenticationToken, handlerGetRandomJob);
+router.get("/categories", authenticationToken, handlerGetJobCategories);
+router.get("/salaries", authenticationToken, handlerGetSalaries);
+router.get("/levels", authenticationToken, handlerGetJobLevels);
+router.get("/work-times", authenticationToken, handlerGetWorkTimes);
+router.get("/cities",authenticationToken, handlerGetCities);
 
 module.exports = router;
