@@ -7,7 +7,8 @@ const {
   handlerGetSalaries,
   handlerGetJobLevels,
   handlerGetWorkTimes,
-  handlerGetCities
+  handlerGetCities,
+  handlerGetJobs
 } = require("./handler");
 const router = express.Router();
 const authenticationToken = require("../../middleware/authenticationToken");
@@ -20,5 +21,6 @@ router.get("/salaries", authenticationToken, handlerGetSalaries);
 router.get("/levels", authenticationToken, handlerGetJobLevels);
 router.get("/work-times", authenticationToken, handlerGetWorkTimes);
 router.get("/cities",authenticationToken, handlerGetCities);
+router.get("/search", authenticationToken, handlerGetJobs);
 
 module.exports = router;

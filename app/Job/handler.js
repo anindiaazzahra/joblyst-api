@@ -213,4 +213,36 @@ module.exports = {
       next(error);
     }
   },
+  handlerGetJobs: async (req, res, next) => {
+    try {
+      const { q } = req.query;
+      let jobSnapshot = await firestore.collection('jobs');
+
+      if (q) {
+        const endKeyword = q + '\uf8ff';
+        jobSnapshot = jobSnapshot.orderBy('jobPosition').startAt(q).endAt(endKeyword);
+      }
+      jobSnapshot = await jobSnapshot.get();
+
+      if (jobSnapshot.empty) {
+        return res.status(404).send({ 
+          status: 'error', 
+          message: 'Job not found' 
+        });
+      }
+
+      const jobsData = [];
+      jobSnapshot.forEach((doc) => {
+        jobsData.push(doc.data());
+      });
+
+      return res.status(200).send({
+        status: 'success',
+        message: 'Successfully get job',
+        jobs: jobsData,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 };
