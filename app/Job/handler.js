@@ -244,5 +244,30 @@ module.exports = {
     } catch (error) {
       next(error);
     }
-  }
+  },
+  handlerGetAllJobs: async (req, res, next) => {
+    try {
+      const jobSnapshot = await firestore.collection('jobs').get();
+
+      if (jobSnapshot.empty) {
+        return res.status(404).send({ 
+          status: 'error', 
+          message: 'Job not found' 
+        });
+      }
+
+      const jobsData = [];
+      jobSnapshot.forEach((doc) => {
+        jobsData.push(doc.data());
+      });
+
+      return res.status(200).send({
+        status: 'success',
+        message: 'Successfully get all jobs',
+        jobs: jobsData,
+      });
+    } catch (error) {
+      next(error);
+    }
+  },
 };
