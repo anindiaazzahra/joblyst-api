@@ -30,6 +30,10 @@ app.use('/job', jobRouter);
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+app.get('/', (req, res) => {
+    res.status(200).json({ message: 'test' });
+});
+
 app.use(customErrorHandler);
 app.use(handler404NotFound);
 
