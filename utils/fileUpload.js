@@ -4,7 +4,7 @@ require('dotenv').config();
 async function uploadImage(file) {
   const storageFB = admin.storage();
   const dateTime = Date.now();
-  const fileName = `images/${dateTime}`;
+  const fileName = `company-logos/${dateTime}`;
   const storageRef = storageFB.bucket().file(fileName);
   const metadata = {
     contentType: file.type,

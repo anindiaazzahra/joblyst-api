@@ -14,7 +14,7 @@ const {
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    storageBucket: 'gs://joblyst-api-project.appspot.com'
+    storageBucket: 'gs://joblyst-d2603.appspot.com'
 });
 
 if (!firebase.apps.length) {
@@ -37,9 +37,10 @@ module.exports = {
       const userData = {
         username,
         email,
+        role: 'user',
       };
 
-      await firestore.collection('users').doc().set(userData);
+      await firestore.collection('users').doc(user.uid).set(userData);
 
       return res.status(200).send({
         status: "success",
@@ -71,7 +72,7 @@ module.exports = {
       const userDocumentRef = userLoginSnapshot.docs[0].ref;
   
       const accessToken = generateAccessToken({
-        email: userLogin.email,
+        uid: userDocumentRef.id
       });
 
       return res.status(200).send({

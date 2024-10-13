@@ -1,6 +1,7 @@
 'use strict';
 const firebase = require('../../db');
 const firestore = firebase.firestore();
+const imageServices = require('../../utils/fileUpload');
 
 module.exports = {
   handlerGetJobByPosition: async (req, res, next) => {
@@ -270,4 +271,33 @@ module.exports = {
       next(error);
     }
   },
+  handlerUploadFile: async (req, res) => {
+    const file = {
+      type: req.file.mimetype,
+      buffer: req.file.buffer
+    }
+
+    if (!req.file) {
+      return res.status(400).send({
+        status: "error",
+        message: "No file uploaded",
+      });
+    }
+  
+    try {
+      const imageUrl = await imageServices.uploadImage(file); 
+  
+      return res.status(200).send({
+        status: "success",
+        message: "File uploaded successfully",
+        file: imageUrl,
+      });
+    } catch (error) {
+      return res.status(500).send({
+        status: "error",
+        message: "Error uploading file",
+        error: error.message,
+      });
+    }
+  }
 };
